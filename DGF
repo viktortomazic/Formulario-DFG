@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula Experimental - DFG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #1c1c1e;
+            --blue: #1a4b75;
+            --blue-light: #e3edf6;
+            --gray: #8e8e93;
+            --gray-light: #f2f2f7;
+            --gray-border: #d9d9de;
+            --brown: #b68b5c;
+            --brown-light: #f0ebe4;
+            --green: #4a7c59;
+            --white: #ffffff;
+            --shadow: 0 20px 40px -12px rgba(28, 28, 30, 0.25);
+            --radius: 20px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gray-light);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background-image: radial-gradient(circle at 10% 20%, var(--brown-light) 0%, var(--gray-light) 90%);
+        }
+        .form-card {
+            background: var(--white);
+            max-width: 580px;
+            width: 100%;
+            padding: 40px 42px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(182, 139, 92, 0.2);
+            position: relative;
+        }
+        .form-card::before {
+            content: '🥋';
+            position: absolute;
+            top: -14px;
+            left: 30px;
+            font-size: 28px;
+            background: var(--white);
+            padding: 0 12px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--brown-light);
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header h1 span {
+            background: var(--green);
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 40px;
+        }
+        .header p {
+            color: var(--gray);
+            font-size: 15px;
+            margin-top: 6px;
+        }
+        .header .brand-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .header .brand-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-black { background: var(--black); }
+        .dot-blue { background: var(--blue); }
+        .dot-gray { background: var(--gray); }
+        .dot-brown { background: var(--brown); }
+        .dot-green { background: var(--green); }
+
+        .field-group { margin-bottom: 20px; }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--black);
+            margin-bottom: 5px;
+        }
+        label .required { color: #c0392b; margin-left: 2px; }
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 2px solid var(--gray-border);
+            border-radius: 12px;
+            background: var(--gray-light);
+            transition: all 0.25s ease;
+            color: var(--black);
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        input:focus, select:focus {
+            border-color: var(--blue);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(26, 75, 117, 0.12);
+        }
+        input::placeholder { color: var(--gray); opacity: 0.7; }
+
+        .radio-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 6px;
+        }
+        .radio-grid label {
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-light);
+            padding: 10px 18px;
+            border-radius: 40px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin: 0;
+            color: var(--black);
+        }
+        .radio-grid label:hover {
+            background: var(--blue-light);
+            border-color: var(--blue);
+        }
+        .radio-grid input[type="radio"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--gray);
+            border-radius: 50%;
+            margin: 0;
+            padding: 0;
+            background: var(--white);
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+        .radio-grid input[type="radio"]:checked {
+            border-color: var(--blue);
+            background: var(--blue);
+            box-shadow: inset 0 0 0 4px var(--white);
+        }
+        .radio-grid input[type="radio"]:checked + span {
+            color: var(--blue);
+            font-weight: 600;
+        }
+        .radio-grid label:has(input:checked) {
+            background: var(--blue-light);
+            border-color: var(--blue);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            cursor: pointer;
+        }
+
+        .conditional-fields {
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.4s ease, margin 0.3s ease;
+            margin-top: 0;
+        }
+        .conditional-fields.open {
+            max-height: 300px;
+            opacity: 1;
+            margin-top: 8px;
+        }
+        .conditional-fields .field-group:last-child { margin-bottom: 0; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--blue);
+            color: var(--white);
+            border: none;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-top: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(26, 75, 117, 0.3);
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-submit:hover:not(:disabled) {
+            background: #123a5a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 75, 117, 0.4);
+        }
+        .btn-submit:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+        .btn-submit .whatsapp-icon { font-size: 22px; }
+
+        .status-message {
+            text-align: center;
+            margin-top: 18px;
+            font-weight: 600;
+            font-size: 15px;
+            min-height: 28px;
+            color: var(--green);
+        }
+        .status-message.error { color: #c0392b; }
+
+        @media (max-width: 480px) {
+            .form-card { padding: 28px 18px; }
+            .header h1 { font-size: 22px; }
+            .radio-grid label { padding: 8px 14px; font-size: 13px; }
+            .btn-submit { font-size: 15px; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-card">
+    <div class="header">
+        <h1>🥋 Faça uma aula experimental <span>Grátis</span></h1>
+        <p>Preencha os dados e inicie a conversa no WhatsApp</p>
+        <div class="brand-dots">
+            <span class="dot-black"></span>
+            <span class="dot-blue"></span>
+            <span class="dot-gray"></span>
+            <span class="dot-brown"></span>
+            <span class="dot-green"></span>
+        </div>
+    </div>
+
+    <form id="formulario" novalidate>
+        <div class="field-group">
+            <label for="nome">Nome completo <span class="required">*</span></label>
+            <input type="text" id="nome" placeholder="Digite seu nome" required>
+        </div>
+
+        <div class="field-group">
+            <label>Plano de interesse <span class="required">*</span></label>
+            <div class="radio-grid">
+                <label><input type="radio" name="plano" value="Jiu-Jitsu" required> <span>Jiu-Jitsu</span></label>
+                <label><input type="radio" name="plano" value="Muay Thai"> <span>Muay Thai</span></label>
+                <label><input type="radio" name="plano" value="Completo (ambos)"> <span>Completo (ambos)</span></label>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label for="praticou">Já praticou alguma arte marcial antes? <span class="required">*</span></label>
+            <select id="praticou" required>
+                <option value="">Selecione...</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
+            </select>
+        </div>
+
+        <div class="conditional-fields" id="camposPratica">
+            <div class="field-group">
+                <label for="qualArte">Qual arte marcial?</label>
+                <input type="text" id="qualArte" placeholder="Ex: Judô, Karatê, Capoeira...">
+            </div>
+            <div class="field-group">
+                <label for="tempo">Por quanto tempo praticou?</label>
+                <input type="text" id="tempo" placeholder="Ex: 2 anos, 6 meses, etc.">
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnEnviar">
+            <span class="whatsapp-icon">💬</span> Enviar e falar no WhatsApp
+        </button>
+
+        <div id="status" class="status-message"></div>
+    </form>
+</div>
+
+<script>
+    const numeroWhats = '5571984512943';
+
+    const form = document.getElementById('formulario');
+    const btn = document.getElementById('btnEnviar');
+    const statusDiv = document.getElementById('status');
+    const praticouSelect = document.getElementById('praticou');
+    const camposPratica = document.getElementById('camposPratica');
+    const qualArteInput = document.getElementById('qualArte');
+    const tempoInput = document.getElementById('tempo');
+
+    praticouSelect.addEventListener('change', function() {
+        if (this.value === 'Sim') {
+            camposPratica.classList.add('open');
+        } else {
+            camposPratica.classList.remove('open');
+            qualArteInput.value = '';
+            tempoInput.value = '';
+        }
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('nome').value.trim();
+        const planoSelecionado = document.querySelector('input[name="plano"]:checked');
+        const praticou = praticouSelect.value;
+
+        if (!nome) {
+            statusDiv.textContent = 'Por favor, digite seu nome.';
+            statusDiv.className = 'status-message error';
+            document.getElementById('nome').focus();
+            return;
+        }
+        if (!planoSelecionado) {
+            statusDiv.textContent = 'Selecione um plano de interesse.';
+            statusDiv.className = 'status-message error';
+            return;
+        }
+        if (!praticou) {
+            statusDiv.textContent = 'Selecione se já praticou ou não.';
+            statusDiv.className = 'status-message error';
+            return;
+        }
+
+        const qualArte = qualArteInput.value.trim();
+        const tempo = tempoInput.value.trim();
+
+        let mensagem = `Olá! Meu nome é ${nome}. `;
+        mensagem += `Estou interessado no plano *${planoSelecionado.value}*. `;
+
+        if (praticou === 'Sim') {
+            const arte = qualArte || 'uma arte marcial';
+            const periodo = tempo || 'algum tempo';
+            mensagem += `Já pratiquei ${arte} por ${periodo}. `;
+        } else {
+            mensagem += 'Nunca pratiquei arte marcial. ';
+        }
+        mensagem += 'Gostaria de saber mais sobre as aulas.';
+
+        const urlWhats = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(mensagem)}`;
+
+        window.open(urlWhats, '_blank');
+
+        statusDiv.textContent = '✅ WhatsApp aberto! Envie a mensagem.';
+        statusDiv.className = 'status-message';
+
+        // Limpa o formulário
+        form.reset();
+        camposPratica.classList.remove('open');
+    });
+</script>
+
+</body>
+</html>
